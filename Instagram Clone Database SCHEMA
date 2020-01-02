@@ -1,0 +1,153 @@
+DROP DATABASE insta;
+CREATE DATABASE insta;
+USE insta;
+
+-- INSTAGRAM SCHEMA Users table
+
+CREATE TABLE users(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+INSERT INTO users (username) 
+VALUES 
+('Akipop68'),
+('BrownCat89'),
+('HummingBird'),
+('TensorFlowin9'),
+('ahirroy'),
+('managing_insta'),
+('wowser_WOW');
+
+-- INSTAGRAM SCHEMA Photos table
+
+CREATE TABLE photos(
+
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	image_url VARCHAR(255) NOT NULL,
+    user_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(user_id)
+    REFERENCES users(id)
+);
+
+INSERT INTO photos (image_url, user_id)
+VALUES 
+('/sjdpkw3', 1),
+('/sjdso2', 2),
+('/wwodojd', 3),
+('/dnsiojdfs', 1),
+('/sdjfosidfj', 4),
+('/sfds23f', 6),
+('/irbjrigj', 7),
+('/dsnfjsfi', 4),
+('/ghergopj', 3);
+
+-- INSTAGRAM SCHEMA Comments table
+
+CREATE TABLE comments (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	comment_text VARCHAR(500) NOT NULL,
+    user_id INT NOT NULL,
+    photo_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(user_id)
+    REFERENCES users(id),
+    FOREIGN KEY(photo_id)
+    REFERENCES photos(id)
+
+);
+
+INSERT INTO comments (comment_text, user_id, photo_id)
+VALUES
+('Wowser!', 3, 2),
+('Ewww get a life!!', 1,4),
+('Beaut!! :* ', 5,6),
+("Def comin' down babe", 7, 2),
+('Yass bebe!', 2, 4);
+
+-- INSTAGRAM SCHEMA Likes table
+
+CREATE TABLE likes (
+	user_id INT NOT NULL,
+    photo_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(photo_id) REFERENCES photos(id),
+    PRIMARY KEY(users_id, photo_id)
+
+);
+
+INSERT INTO likes (user_id, photo_id)
+VALUES
+(1,1),
+(2,1),
+(2,3),
+(4,5),
+(1,5),
+(5,6),
+(6,7);
+
+-- INSTAGRAM SCHEMA Follows table
+
+CREATE TABLE follow(
+	followee_id INT NOT NULL,
+    follower_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(followee_id) REFERENCES users(id),
+    FOREIGN KEY(follower_id) REFERENCES users(id),
+	PRIMARY KEY(followee_id, follower_id)
+);
+
+INSERT INTO follow (followee_id, follower_id)
+VALUES
+(2,4),
+(2,1),
+(1,2),
+(4,5),
+(1,6),
+(7,3),
+(3,7),
+(1,7),
+(6,3),
+(3,7);
+
+
+-- INSTAGRAM SCHEMA Tags, Photo Tags table
+
+CREATE TABLE tags (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(400) UNIQUE,
+    created_at TIMESTAMP DEFAULT NOW()
+
+);
+
+
+INSERT INTO tags (tag_name)
+VALUES
+('#2020'),
+('#cute'),
+('#YAS'),
+('#GiveItAll');
+
+CREATE TABLE photo_tags(
+	photo_id INT NOT NULL,
+	tag_id INT NOT NULL,
+    FOREIGN KEY(photo_id) REFERENCES photos(id),
+    FOREIGN KEY(tag_id) REFERENCES tags(id),
+    PRIMARY KEY(photo_id, tag_id)
+);
+
+INSERT INTO photo_tags (photo_id, tag_id)
+VALUES
+(2,1),
+(4,5),
+(5,7),
+(6,7),
+(2,4),
+(3,5),
+(1,3),
+(2,5);
+
+
